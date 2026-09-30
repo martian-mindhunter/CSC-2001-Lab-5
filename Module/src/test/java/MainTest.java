@@ -107,4 +107,40 @@ class MainTest {
         assertTrue(empty.equals(new AStack(new String[]{"a"})));
     }
 
+    @Test
+    void testAStackPop(){
+        String top = aStackA.pop();
+        assertEquals("a",top);
+        assertTrue(aStackA.equals(new AStack(new String[]{"b", "c"})));
+        // empty pop check
+        AStack empty = AStack.empty_stack();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.pop();
+        });
+    }
+
+    @Test
+    void testAStackPeek(){
+        String top = aStackA.peek();
+        assertEquals("a",top);
+        // empty peek check
+        AStack empty = AStack.empty_stack();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.peek();
+        });
+    }
+
+    @Test
+    void testAStackSize(){
+        int size = aStackA.size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    void testAStackIsEmpty(){
+        AStack empty = AStack.empty_stack();
+        assertTrue(empty.equals(new AStack()));
+        assertFalse(empty.equals(aStackA));
+    }
+
 }

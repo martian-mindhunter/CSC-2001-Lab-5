@@ -74,4 +74,46 @@ class AStack {
         }
     }
 
+    // Removes & returns top element of stack, or returns error
+    public String pop(){
+        if(this.astackList == null){
+            throw new NoSuchElementException();
+        }
+        String hold = this.astackList[0];
+        int newLength = this.astackList.length-1;
+        String[] shorterArray = new String[newLength];
+        for( int i = 1; i < this.astackList.length; i++ ){
+            shorterArray[i-1] = this.astackList[i];
+        }
+        this.astackList = shorterArray;
+        return hold;
+    }
+
+    // Returns top elt w/o changing stack
+    public String peek(){
+        if(this.astackList == null){
+            throw new NoSuchElementException();
+        }
+        String hold = this.astackList[0];
+        return hold;
+    }
+
+    // Returns amt of elts in stack
+    public int size(){
+        if(this.astackList == null){
+            throw new NoSuchElementException();
+        }
+        int stackSize = this.astackList.length;
+        return stackSize;
+    }
+
+    // Returns if stack is empty
+    public boolean is_empty(){
+        if(this.astackList == null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
