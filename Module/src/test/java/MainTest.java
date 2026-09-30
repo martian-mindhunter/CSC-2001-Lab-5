@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
+
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +21,68 @@ class MainTest {
     void testLLStackEmptyStack() {
         LLStack empty = new LLStack();
         assertTrue(empty.equals(new LLStack()));
+        LLStack emptyMethod = LLStack.empty_stack();
+        assertTrue(empty.equals(emptyMethod));
+    }
+
+    @Test
+    void testLLStackPush() {
+        // adding to populated stack
+        llStackA.push("z");
+        LLStack test = new LLStack( new Pair("z", new Pair("a", new Pair("b", new Pair("c", null)))));
+        assertTrue(llStackA.equals(test));
+        // adding to an empty stack
+        test = LLStack.empty_stack();
+        test.push("first");
+        assertTrue(test.equals(new LLStack( new Pair("first", null))));
+    }
+
+    @Test
+    void testLLStackPop() {
+        // popping populated stack
+        String popElt = llStackA.pop();
+        LLStack test = new LLStack( new Pair("b", new Pair( "c", null)));
+        assertTrue(llStackA.equals(test));
+        assertEquals(popElt, "a");
+        // popping empty stack (error test)
+        LLStack empty = LLStack.empty_stack();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.pop();
+        });
+    }
+
+    @Test
+    void testLLStackPeek() {
+        String peekElt = llStackA.peek();
+        assertEquals(peekElt, "a");
+        // peeking empty stack
+        LLStack empty = LLStack.empty_stack();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.peek();
+        });
+    }
+
+    @Test
+    void testLLStackSize() {
+        assertEquals(3, llStackA.size());
+        // size empty stack
+        LLStack empty = LLStack.empty_stack();
+        assertEquals(0, empty.size());
+    }
+
+    @Test
+    void testLLStackIsEmpty() {
+        assertFalse(llStackA.is_empty());
+        LLStack empty = LLStack.empty_stack();
+        assertTrue(empty.is_empty());
+    }
+
+    AStack aStackA = new AStack(new String[]{"a", "b", "c"});
+
+    @Test
+    void testAStackEquals() {
+        AStack aStackB = new AStack(new String[]{"a", "b", "c"});
+        assertTrue(aStackA.equals(aStackB));
     }
 
 }
