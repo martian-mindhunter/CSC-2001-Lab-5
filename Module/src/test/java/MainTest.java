@@ -139,8 +139,8 @@ class MainTest {
     @Test
     void testAStackIsEmpty(){
         AStack empty = AStack.empty_stack();
-        assertTrue(empty.equals(new AStack()));
-        assertFalse(empty.equals(aStackA));
+        assertTrue(empty.is_empty());
+        assertFalse(llStackA.is_empty());
     }
 
 }
