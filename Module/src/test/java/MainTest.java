@@ -143,4 +143,44 @@ class MainTest {
         assertFalse(llStackA.is_empty());
     }
 
+    @Test
+    void testAStackTime(){
+        for(int t = 100; t <= 1000; t += 100) {
+
+            int currentN = 1;
+            int priorN = 0;
+
+            while (true) {
+
+                AStack testStack = new AStack(new String[currentN]);
+
+                long startTime = System.nanoTime();
+
+                for (int i = 0; i < currentN; i++) {
+                    testStack.push("elt");
+                }
+
+                for (int i = 0; i < currentN; i++) {
+                    testStack.pop();
+                }
+
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime) / 1000000;
+
+                if (duration > t) {
+                    if (priorN == 0) {
+                        IO.println("1 elt was > " + t + " ms\n");
+                    } else {
+                        IO.println(t + " ms: Largest sequence under limit is: " + priorN + " elts\n");
+                    }
+                    break;
+                }
+
+                priorN = currentN;
+                currentN *= 2;
+
+            }
+        }
+    }
+
 }
