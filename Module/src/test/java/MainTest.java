@@ -79,6 +79,46 @@ class MainTest {
         assertTrue(empty.is_empty());
     }
 
+    @Test
+    void testLLStackTime(){
+        for(int t = 100; t <= 1000; t += 100) {
+
+            int currentN = 1;
+            int priorN = 0;
+
+            while (true) {
+
+                LLStack testStack = new LLStack(new Pair("elt", null));
+
+                long startTime = System.nanoTime();
+
+                for (int i = 0; i < currentN; i++) {
+                    testStack.push("elt");
+                }
+
+                for (int i = 0; i < currentN; i++) {
+                    testStack.pop();
+                }
+
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime) / 1000000;
+
+                if (duration > t) {
+                    if (priorN == 0) {
+                        IO.println("1 elt was > " + t + " ms\n");
+                    } else {
+                        IO.println(t + " ms: Largest sequence under limit is: " + priorN + " elts\n");
+                    }
+                    break;
+                }
+
+                priorN = currentN;
+                currentN *= 2;
+
+            }
+        }
+    }
+
     // AStack Tests
     AStack aStackA = new AStack(new String[]{"a", "b", "c"});
 
@@ -182,5 +222,21 @@ class MainTest {
             }
         }
     }
+
+    // LLQueue Tests
+    LLQueue llQueueA = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
+
+    @Test
+    void testLLQueueEquals(){
+        assertTrue(llQueueA.equals( new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))))));
+        assertFalse(llQueueA.equals(new LLQueue(new Pair("a", null))));
+        // Empty Test
+        LLQueue empty = new LLQueue();
+        assertTrue(empty.equals(LLQueue.empty_queue()));
+
+    }
+
+//    @Test
+//    void test
 
 }
