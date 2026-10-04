@@ -35,17 +35,30 @@ class LLQueue {
     }
     // Adds a String to the top of the stack
     public void push(String elt){
-        this.llstackPair = new Pair(elt, this.llstackPair);
+        this.llqueuePair = new Pair(elt, this.llqueuePair);
     }
 
-    // Removes & returns the top element (LIFO)
-    public String pop(){
-        if(this.llstackPair == null){
+    // Adds a string to the end of queue
+    public void enqueue(String elt){
+        this.llqueuePair = addToEnd(this.llqueuePair, elt);
+    }
+
+    // enqueue helper method that recursively appends new elt
+    private Pair addToEnd(Pair r, String l){
+        if(r == null){
+            return new Pair(l, null);
+        }
+        return new Pair(r.head(), addToEnd(r.tail(), l));
+    }
+
+    // Removes & returns the top element (FIFO)
+    public String dequeue(){
+        if(this.llqueuePair == null){
             throw new NoSuchElementException();
         }
 
-        String topValue = this.llstackPair.head();
-        this.llstackPair = this.llstackPair.tail();
+        String topValue = this.llqueuePair.head();
+        this.llqueuePair = this.llqueuePair.tail();
 
         return topValue;
 
@@ -53,16 +66,16 @@ class LLQueue {
 
     // Returns top element w/o removal
     public String peek(){
-        if(this.llstackPair == null){
+        if(this.llqueuePair == null){
             throw new NoSuchElementException();
         }
 
-        return this.llstackPair.head();
+        return this.llqueuePair.head();
     }
 
     // Returns the # of elts in stack
     public int size(){
-        return counter(this.llstackPair);
+        return counter(this.llqueuePair);
     }
     // size helper method
     public int counter(Pair r){
@@ -74,7 +87,7 @@ class LLQueue {
 
     // Returns if a stack has no elts
     public boolean is_empty(){
-        return this.equals(new LLStack());
+        return this.equals(new LLQueue());
     }
 
 }

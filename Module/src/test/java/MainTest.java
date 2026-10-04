@@ -236,7 +236,118 @@ class MainTest {
 
     }
 
-//    @Test
-//    void test
+    @Test
+    void testLLQueueEnqueue(){
+        llQueueA.enqueue("d");
+        LLQueue llQueueD = new LLQueue(new Pair("a", new Pair("b", new Pair("c", new Pair("d", null)))));
+        assertTrue(llQueueA.equals(llQueueD));
+        LLQueue empty = LLQueue.empty_queue();
+        empty.enqueue("z");
+        assertFalse(empty.equals(llQueueD));
+        assertTrue(empty.equals(new LLQueue(new Pair("z", null))));
+
+    }
+
+    @Test
+    void testLLQueueDequeue(){
+        String elt = llQueueA.dequeue();
+        assertEquals("a", elt);
+        LLQueue empty = LLQueue.empty_queue();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.dequeue();
+        });
+    }
+
+    @Test
+    void testLLQueuePeek(){
+        String top = llQueueA.peek();
+        assertEquals("a", top);
+        LLQueue empty = LLQueue.empty_queue();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.peek();
+        });
+    }
+
+    @Test
+    void testLLQueueSize(){
+        int targetSize = 3;
+        assertEquals(targetSize, llQueueA.size());
+        llQueueA.enqueue("d");
+        assertFalse(targetSize != llQueueA.size());
+    }
+
+    @Test
+    void testLLQueueIsEmpty(){
+        LLQueue empty = LLQueue.empty_queue();
+        assertTrue(empty.is_empty());
+        assertFalse(llQueueA.is_empty());
+    }
+
+
+    // Tests for AQueue
+    AQueue aQueueA = new AQueue(new String[]{"a", "b", "c"});
+
+    @Test
+    void testAQueueEquals(){
+        assertTrue(aQueueA.equals(new AQueue(new String[]{"a", "b", "c"})));
+        AQueue aQueueB = new AQueue(new String[]{"a", "b"});
+        assertFalse(aQueueA.equals(aQueueB));
+    }
+
+    @Test
+    void testAQueueEmpty(){
+        assertFalse(aQueueA.equals(AQueue.empty_queue()));
+        AQueue empty = AQueue.empty_queue();
+        assertTrue(empty.equals(new AQueue()));
+        assertTrue(empty.equals(new AQueue(null)));
+    }
+
+    @Test
+    void testAQueueEnqueue(){
+        AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d"});
+        aQueueA.enqueue("d");
+        assertTrue(aQueueA.equals(aQueueD));
+        AQueue empty = AQueue.empty_queue();
+        empty.enqueue("z");
+        assertTrue(empty.equals(new AQueue(new String[]{"z"})));
+    }
+
+    @Test
+    void testAQueueDequeue(){
+        String elt = aQueueA.dequeue();
+        assertEquals("a", elt);
+        assertTrue(aQueueA.equals(new AQueue(new String[]{"b", "c"})));
+        AQueue empty = AQueue.empty_queue();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.dequeue();
+        });
+    }
+
+    @Test
+    void testAQueuePeek(){
+        String elt = aQueueA.peek();
+        assertEquals("a", elt);
+        AQueue empty = AQueue.empty_queue();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.peek();
+        });
+    }
+
+    @Test
+    void testAQueueSize(){
+        int targetSize = aQueueA.size();
+        assertEquals(3, targetSize);
+        AQueue empty = AQueue.empty_queue();
+        assertThrows(NoSuchElementException.class, () -> {
+            empty.size();
+        });
+    }
+
+    @Test
+    void testAQueueIsEmpty(){
+        AQueue empty = AQueue.empty_queue();
+        assertFalse(aQueueA.is_empty());
+        assertTrue(empty.is_empty());
+    }
 
 }
