@@ -273,7 +273,7 @@ class MainTest {
         int targetSize = 3;
         assertEquals(targetSize, llQueueA.size());
         llQueueA.enqueue("d");
-        assertFalse(targetSize != llQueueA.size());
+        assertTrue(targetSize != llQueueA.size());
     }
 
     @Test

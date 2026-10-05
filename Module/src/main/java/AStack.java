@@ -4,13 +4,25 @@ import java.util.NoSuchElementException;
 class AStack {
 
     String[] astackList;
+    int live;
 
     public AStack (String[] stringList){
-        this.astackList = stringList;
+        this.astackList = new String[stringList.length];
+        for(int i = 0; i < astackList.length; i++){
+            this.astackList[i] = stringList[i];
+        }
+
+        this.live = 0;
+        for(String elt : stringList){
+            if(elt != null){
+                this.live++;
+            }
+        }
     }
 
     public AStack (){
         this.astackList = null;
+        this.live = 0;
     }
 
     // AStack equals method
@@ -45,33 +57,53 @@ class AStack {
         return new AStack();
     }
 
+    // Doubling method to allow for inserting/adding
+    public void doubleLength( ){
+        if(this.live == this.astackList.length){
+            int newLength;
+            if(this.astackList.length == 0){
+                newLength = 1;
+            } else {
+                newLength = this.astackList.length * 2;
+            }
+            String[] doubledArray = new String[newLength];
+
+            for(int i = 0; i < this.live; i++){
+                doubledArray[i] = this.astackList[i];
+            }
+            this.astackList = doubledArray;
+        }
+    }
+
     // Adds elt to the top of the stack
     public void push(String elt){
-//        String[] hold = this.astackList;
-////        this.doubleLength();
-//        for(int i = 1; i < this.astackList.length; i++){
-//            this.astackList[i] = hold[i-1];
-//        }
-        int newLength;
-        if(this.astackList == null){
-
-            String[] longerArray = new String[1];
-
-            this.astackList = longerArray;
-            this.astackList[0] = elt;
-
-        } else {
-
-            newLength = this.astackList.length + 1;
-            String[] longerArray = new String[newLength];
-
-            for(int i = 0; i < this.astackList.length; i++){
-                longerArray[i+1] = this.astackList[i];
-            }
-            this.astackList = longerArray;
-            this.astackList[0] = elt;
-
+        String[] hold = this.astackList;
+        this.doubleLength();
+        for(int i = 1; i < this.live+1; i++){
+            this.astackList[i] = hold[i-1];
         }
+        this.astackList[0] = elt;
+
+//        int newLength;
+//        if(this.astackList == null){
+//
+//            String[] longerArray = new String[1];
+//
+//            this.astackList = longerArray;
+//            this.astackList[0] = elt;
+//
+//        } else {
+//
+//            newLength = this.astackList.length + 1;
+//            String[] longerArray = new String[newLength];
+//
+//            for(int i = 0; i < this.astackList.length; i++){
+//                longerArray[i+1] = this.astackList[i];
+//            }
+//            this.astackList = longerArray;
+//            this.astackList[0] = elt;
+//
+//        }
     }
 
     // Removes & returns top element of stack, or returns error
