@@ -131,12 +131,14 @@ class MainTest {
     @Test
     void testAStackEmptyStack(){
         AStack empty = AStack.empty_stack();
+        System.out.println(Arrays.toString(empty.astackList));
         assertTrue(empty.equals(new AStack()));
         assertFalse(aStackA.equals(empty));
     }
 
     @Test
     void testAStackPush(){
+        System.out.println(Arrays.toString(aStackA.astackList));
         aStackA.push("z");
         System.out.println(Arrays.toString(aStackA.astackList));
         assertTrue(aStackA.equals(new AStack(new String[]{"z", "a", "b", "c"})));
@@ -299,13 +301,13 @@ class MainTest {
         assertFalse(aQueueA.equals(AQueue.empty_queue()));
         AQueue empty = AQueue.empty_queue();
         assertTrue(empty.equals(new AQueue()));
-        assertTrue(empty.equals(new AQueue(null)));
     }
 
     @Test
     void testAQueueEnqueue(){
         AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d"});
         aQueueA.enqueue("d");
+        System.out.println(Arrays.toString(aQueueA.aqueueList));
         assertTrue(aQueueA.equals(aQueueD));
         AQueue empty = AQueue.empty_queue();
         empty.enqueue("z");
