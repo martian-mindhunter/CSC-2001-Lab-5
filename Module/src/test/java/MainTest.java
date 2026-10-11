@@ -148,6 +148,11 @@ class MainTest {
         empty.push("a");
         assertTrue(empty.equals(new AStack(new String[]{"a"})));
     }
+    // TO DO: make push go at the end of the AStack not the beginning
+    // fix the constructor to have Live element counter
+    // study for midterm by studying questions similar to quizzes
+    // identify running time & operations
+    // make up your own questions based on quizzes
 
     @Test
     void testAStackPop(){
