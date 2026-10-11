@@ -141,24 +141,27 @@ class MainTest {
         System.out.println(Arrays.toString(aStackA.astackList));
         aStackA.push("z");
         System.out.println(Arrays.toString(aStackA.astackList));
-        assertTrue(aStackA.equals(new AStack(new String[]{"z", "a", "b", "c"})));
+        assertFalse(aStackA.equals(new AStack(new String[]{"z", "a", "b", "c"})));
+        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b", "c", "z"})));
+        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b", "c", "z", null, null})));
         // pushing to an empty astack
         AStack empty = AStack.empty_stack();
         System.out.println(Arrays.toString(empty.astackList));
         empty.push("a");
         assertTrue(empty.equals(new AStack(new String[]{"a"})));
     }
-    // TO DO: make push go at the end of the AStack not the beginning
-    // fix the constructor to have Live element counter
+    // TO DO:
+    // :)  make push go at the end of the AStack not the beginning
+    // :)  fix the constructor to have Live element counter
     // study for midterm by studying questions similar to quizzes
     // identify running time & operations
-    // make up your own questions based on quizzes
 
     @Test
     void testAStackPop(){
         String top = aStackA.pop();
-        assertEquals("a",top);
-        assertTrue(aStackA.equals(new AStack(new String[]{"b", "c"})));
+        assertEquals("c",top);
+        assertFalse(aStackA.equals(new AStack(new String[]{"b", "c"})));
+        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b"})));
         // empty pop check
         AStack empty = AStack.empty_stack();
         assertThrows(NoSuchElementException.class, () -> {
@@ -169,7 +172,7 @@ class MainTest {
     @Test
     void testAStackPeek(){
         String top = aStackA.peek();
-        assertEquals("a",top);
+        assertEquals("c",top);
         // empty peek check
         AStack empty = AStack.empty_stack();
         assertThrows(NoSuchElementException.class, () -> {
@@ -181,6 +184,11 @@ class MainTest {
     void testAStackSize(){
         int size = aStackA.size();
         assertEquals(3, size);
+        aStackA.pop();
+        assertEquals(2, aStackA.size());
+        aStackA.push("c");
+        aStackA.push("d");
+        assertEquals(4, aStackA.size());
     }
 
     @Test

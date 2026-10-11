@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 class AStack {
@@ -105,11 +104,19 @@ class AStack {
     public void push(String elt){
         String[] hold = this.astackList;
         this.doubleLength();
-        for(int i = 1; i < this.live+1; i++){
-            this.astackList[i] = hold[i-1];
+//        for(int i = 1; i < this.live+1; i++){
+//            this.astackList[i] = hold[i-1];
+//        }
+//        if(this.astackList != null){
+//            this.astackList[0] = elt;
+//        } else {
+//            this.astackList = new String[]{elt};
+//        }
+        for(int i = 0; i < this.live; i++){
+            this.astackList[i] = hold[i];
         }
         if(this.astackList != null){
-            this.astackList[0] = elt;
+            this.astackList[this.live] = elt;
         } else {
             this.astackList = new String[]{elt};
         }
@@ -142,11 +149,11 @@ class AStack {
         if(this.astackList == null || this.astackList.length == 0){
             throw new NoSuchElementException();
         }
-        String hold = this.astackList[0];
+        String hold = this.astackList[this.live-1];
         int newLength = this.astackList.length-1;
         String[] shorterArray = new String[newLength];
-        for( int i = 1; i < this.astackList.length; i++ ){
-            shorterArray[i-1] = this.astackList[i];
+        for( int i = 0; i < this.astackList.length-1; i++ ){
+            shorterArray[i] = this.astackList[i];
         }
         this.astackList = shorterArray;
         this.live--;
@@ -158,7 +165,7 @@ class AStack {
         if(this.astackList == null || this.astackList.length == 0){
             throw new NoSuchElementException();
         }
-        String hold = this.astackList[0];
+        String hold = this.astackList[this.live-1];
         return hold;
     }
 
@@ -167,8 +174,9 @@ class AStack {
         if(this.astackList == null){
             throw new NoSuchElementException();
         }
-        int stackSize = this.astackList.length;
-        return stackSize;
+//        int stackSize = this.astackList.length;
+//        return stackSize;
+        return this.live;
     }
 
     // Returns if stack is empty
