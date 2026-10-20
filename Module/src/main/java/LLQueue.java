@@ -1,4 +1,5 @@
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 class LLQueue {
 
@@ -13,29 +14,35 @@ class LLQueue {
     }
 
     // LLQueue equals method
-    public boolean equals( LLQueue other ){
+    public boolean equals( Object obj ){
 
-        if (other == null){
+//        if (other == null){
+//            return false;
+//        }
+//        if(this == other){
+//            return true;
+//        }
+//
+//        if(this.llqueuePair == null || other.llqueuePair == null){
+//            return this.llqueuePair == other.llqueuePair;
+//        }
+//        return this.llqueuePair.equals(other.llqueuePair);
+
+        if(obj instanceof LLQueue){
+
+            LLQueue other = (LLQueue)obj;
+
+            return Objects.equals(this.llqueuePair, other.llqueuePair);
+
+        } else {
             return false;
         }
-        if(this == other){
-            return true;
-        }
-
-        if(this.llqueuePair == null || other.llqueuePair == null){
-            return this.llqueuePair == other.llqueuePair;
-        }
-        return this.llqueuePair.equals(other.llqueuePair);
 
     }
 
     // Returns an empty queue w/o arguments
     public static LLQueue empty_queue(){
         return(new LLQueue());
-    }
-    // Adds a String to the top of the stack
-    public void push(String elt){
-        this.llqueuePair = new Pair(elt, this.llqueuePair);
     }
 
     // Adds a string to the end of queue

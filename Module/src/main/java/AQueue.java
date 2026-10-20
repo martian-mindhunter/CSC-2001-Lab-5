@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class AQueue {
@@ -5,17 +6,18 @@ public class AQueue {
     String[] aqueueList;
     int live;
 
-    public AQueue(String[] stringList){
+    public AQueue(String[] stringList, int liveElts){
         this.aqueueList = new String[stringList.length];
         for( int i = 0; i < aqueueList.length; i++ ){
             this.aqueueList[i] = stringList[i];
         }
-        this.live = 0;
-        for(String elt : stringList){
-            if(elt != null){
-                this.live++;
-            }
-        }
+//        this.live = 0;
+//        for(String elt : stringList){
+//            if(elt != null){
+//                this.live++;
+//            }
+//        }
+        this.live = liveElts;
     }
 
     public AQueue(){
@@ -24,53 +26,14 @@ public class AQueue {
     }
 
     // AStack equals method
-    public boolean equals( AQueue other ){
+    public boolean equals( Object obj ){
 
-//        if (other == null){
-//            return false;
-//        }
-//        if(this == other){
-//            return true;
-//        }
-//
-//        if(this.aqueueList == null || other.aqueueList == null){
-//            return this.aqueueList == other.aqueueList;
-//        }
-//
-//        if(this.aqueueList.length != other.aqueueList.length){
-//            return false;
-//        } else {
-//            for( int i = 0; i < this.aqueueList.length; i++ ){
-//                if(!(this.aqueueList[i].equals(other.aqueueList[i]))){
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-        if(this.aqueueList.length >= other.aqueueList.length){
-            for(int i = 0; i < other.aqueueList.length; i++){
-                if(this.aqueueList[i] != other.aqueueList[i]){
-                    return false;
-                }
-            }
-            for(int i = other.aqueueList.length; i < this.aqueueList.length; i++){
-                if(this.aqueueList[i] != null){
-                    return false;
-                }
-            }
+        if(obj instanceof AQueue ){
+            AQueue other = (AQueue)obj;
+            return (this.live == other.live) && (Arrays.equals(this.aqueueList, other.aqueueList));
         } else {
-            for(int i = 0; i < this.aqueueList.length; i++){
-                if(other.aqueueList[i].equals(this.aqueueList[i])){
-                    return false;
-                }
-            }
-            for(int i = this.aqueueList.length; i < other.aqueueList.length; i++){
-                if(other.aqueueList[i] != null){
-                    return false;
-                }
-            }
+            return false;
         }
-        return true;
 
     }
 
@@ -101,17 +64,17 @@ public class AQueue {
 
     // Adds elt to the end of the queue
     public void enqueue(String elt){
-        String[] hold = this.aqueueList;
-        this.doubleLength();
-        for(int i = 0; i < this.live; i++){
-            this.aqueueList[i] = hold[i];
-        }
-        if(this.aqueueList != null){
-            this.aqueueList[live] = elt;
-        } else {
-            this.aqueueList = new String[]{elt};
-        }
-        this.live++;
+//        String[] hold = this.aqueueList;
+//        this.doubleLength();
+//        for(int i = 0; i < this.live; i++){
+//            this.aqueueList[i] = hold[i];
+//        }
+//        if(this.aqueueList != null){
+//            this.aqueueList[live] = elt;
+//        } else {
+//            this.aqueueList = new String[]{elt};
+//        }
+//        this.live++;
 //        int newLength;
 //        if(this.aqueueList == null){
 //
@@ -132,6 +95,9 @@ public class AQueue {
 //            this.aqueueList = longerArray;
 //
 //        }
+        this.doubleLength();
+        this.aqueueList[this.live] = elt;
+        this.live++;
     }
 
     // Removes & returns top element of stack, or returns error

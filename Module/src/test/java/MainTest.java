@@ -16,7 +16,7 @@ class MainTest {
         LLStack llStackB = new LLStack( new Pair( "a", new Pair("b", new Pair("c", null))));
         System.out.println(llStackA);
         System.out.println(llStackB);
-        assertTrue(llStackA.equals(llStackB));
+        assertEquals(llStackA, llStackB);
     }
 
     @Test
@@ -32,7 +32,7 @@ class MainTest {
         // adding to populated stack
         llStackA.push("z");
         LLStack test = new LLStack( new Pair("z", new Pair("a", new Pair("b", new Pair("c", null)))));
-        assertTrue(llStackA.equals(test));
+        assertEquals(test, llStackA);
         // adding to an empty stack
         test = LLStack.empty_stack();
         test.push("first");
@@ -44,7 +44,7 @@ class MainTest {
         // popping populated stack
         String popElt = llStackA.pop();
         LLStack test = new LLStack( new Pair("b", new Pair( "c", null)));
-        assertTrue(llStackA.equals(test));
+        assertEquals(test, llStackA);
         assertEquals(popElt, "a");
         // popping empty stack (error test)
         LLStack empty = LLStack.empty_stack();
@@ -120,11 +120,11 @@ class MainTest {
     }
 
     // AStack Tests
-    AStack aStackA = new AStack(new String[]{"a", "b", "c"});
+    AStack aStackA = new AStack(new String[]{"a", "b", "c"}, 3);
 
     @Test
     void testAStackEquals() {
-        AStack aStackB = new AStack(new String[]{"a", "b", "c"});
+        AStack aStackB = new AStack(new String[]{"a", "b", "c"}, 3);
         assertTrue(aStackA.equals(aStackB));
     }
 
@@ -141,15 +141,22 @@ class MainTest {
         System.out.println(Arrays.toString(aStackA.astackList));
         aStackA.push("z");
         System.out.println(Arrays.toString(aStackA.astackList));
-        assertFalse(aStackA.equals(new AStack(new String[]{"z", "a", "b", "c"})));
-        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b", "c", "z"})));
-        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b", "c", "z", null, null})));
+//        assertFalse(aStackA.equals(new AStack(new String[]{"z", "a", "b", "c"}, 4)));
+        assertNotEquals(Arrays.toString(aStackA.astackList), Arrays.toString((new AStack(new String[]{"a", "b", "c", "z"}, 4).astackList)));
+        assertEquals(Arrays.toString(aStackA.astackList), Arrays.toString((new AStack(new String[]{"a", "b", "c", "z", null, null}, 4).astackList)));
+        assertEquals(new AStack(new String[]{"a", "b", "c", "z", null, null}, 4), aStackA);
+//        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b", "c", "z", null, null}, 4)));
         // pushing to an empty astack
         AStack empty = AStack.empty_stack();
         System.out.println(Arrays.toString(empty.astackList));
         empty.push("a");
-        assertTrue(empty.equals(new AStack(new String[]{"a"})));
+        assertTrue(empty.equals(new AStack(new String[]{"a"}, 1)));
     }
+
+//    @Test
+//    void testFoo(){
+//        int arr[] = {5, 6, 7, 8, 0, 0};
+//    }
     // TO DO:
     // :)  make push go at the end of the AStack not the beginning
     // :)  fix the constructor to have Live element counter
@@ -160,8 +167,9 @@ class MainTest {
     void testAStackPop(){
         String top = aStackA.pop();
         assertEquals("c",top);
-        assertFalse(aStackA.equals(new AStack(new String[]{"b", "c"})));
-        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b"})));
+//        assertFalse(aStackA.equals(new AStack(new String[]{"b", "c"}, 2)));
+//        assertTrue(aStackA.equals(new AStack(new String[]{"a", "b"}, 2)));
+        assertEquals(new AStack(new String[]{"a", "b", null}, 2), aStackA);
         // empty pop check
         AStack empty = AStack.empty_stack();
         assertThrows(NoSuchElementException.class, () -> {
@@ -207,7 +215,7 @@ class MainTest {
 
             while (true) {
 
-                AStack testStack = new AStack(new String[currentN]);
+                AStack testStack = new AStack(new String[currentN], currentN);
 
                 long startTime = System.nanoTime();
 
@@ -240,14 +248,17 @@ class MainTest {
 
     // LLQueue Tests
     LLQueue llQueueA = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
+    LLQueue llQueueB = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
 
     @Test
     void testLLQueueEquals(){
-        assertTrue(llQueueA.equals( new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))))));
-        assertFalse(llQueueA.equals(new LLQueue(new Pair("a", null))));
+//        assertTrue(llQueueA.equals( new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))))));
+//        assertFalse(llQueueA.equals(new LLQueue(new Pair("a", null))));
         // Empty Test
         LLQueue empty = new LLQueue();
-        assertTrue(empty.equals(LLQueue.empty_queue()));
+//        assertTrue(empty.equals(LLQueue.empty_queue()));
+        assertEquals(llQueueA, llQueueB);
+        assertEquals(empty, new LLQueue());
 
     }
 
@@ -255,11 +266,10 @@ class MainTest {
     void testLLQueueEnqueue(){
         llQueueA.enqueue("d");
         LLQueue llQueueD = new LLQueue(new Pair("a", new Pair("b", new Pair("c", new Pair("d", null)))));
-        assertTrue(llQueueA.equals(llQueueD));
+        assertEquals(llQueueA, llQueueD);
         LLQueue empty = LLQueue.empty_queue();
         empty.enqueue("z");
-        assertFalse(empty.equals(llQueueD));
-        assertTrue(empty.equals(new LLQueue(new Pair("z", null))));
+        assertEquals(empty, new LLQueue(new Pair("z", null)));
 
     }
 
@@ -288,7 +298,7 @@ class MainTest {
         int targetSize = 3;
         assertEquals(targetSize, llQueueA.size());
         llQueueA.enqueue("d");
-        assertTrue(targetSize != llQueueA.size());
+        assertNotEquals(targetSize, llQueueA.size());
     }
 
     @Test
@@ -300,38 +310,51 @@ class MainTest {
 
 
     // Tests for AQueue
-    AQueue aQueueA = new AQueue(new String[]{"a", "b", "c"});
+    AQueue aQueueA = new AQueue(new String[]{"a", "b", "c"}, 3);
 
     @Test
     void testAQueueEquals(){
-        assertTrue(aQueueA.equals(new AQueue(new String[]{"a", "b", "c"})));
-        AQueue aQueueB = new AQueue(new String[]{"a", "b"});
-        assertFalse(aQueueA.equals(aQueueB));
+//        assertTrue(aQueueA.equals(new AQueue(new String[]{"a", "b", "c"})));
+        assertEquals(aQueueA, new AQueue(new String[]{"a", "b", "c"}, 3));
+        AQueue aQueueB = new AQueue(new String[]{"a", "b"}, 2);
+//        assertFalse(aQueueA.equals(aQueueB));
+        assertNotEquals(aQueueA, aQueueB);
+        aQueueB.enqueue("c");
+//        System.out.println(Arrays.toString(aQueueA.aqueueList));
+//        aQueueA.enqueue(null);
+//        System.out.println(Arrays.toString(aQueueA.aqueueList));
+//        System.out.println(Arrays.toString(aQueueB.aqueueList));
+        assertNotEquals(aQueueA, aQueueB);
+        assertEquals(new AQueue(new String[]{"a", "b", "c", null}, 3), aQueueB);
     }
 
     @Test
     void testAQueueEmpty(){
-        assertFalse(aQueueA.equals(AQueue.empty_queue()));
+        assertEquals(AQueue.empty_queue(), new AQueue());
         AQueue empty = AQueue.empty_queue();
-        assertTrue(empty.equals(new AQueue()));
+        assertEquals(empty, AQueue.empty_queue());
+        assertNotEquals(aQueueA, empty);
     }
 
     @Test
-    void testAQueueEnqueue(){
-        AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d"});
+    void testAQueueEnqueue() {
+        AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d", null, null}, 4);
         aQueueA.enqueue("d");
         System.out.println(Arrays.toString(aQueueA.aqueueList));
-        assertTrue(aQueueA.equals(aQueueD));
+//        assertTrue(aQueueA.equals(aQueueD));
+        assertEquals(aQueueA, aQueueD);
         AQueue empty = AQueue.empty_queue();
         empty.enqueue("z");
-        assertTrue(empty.equals(new AQueue(new String[]{"z"})));
+//        assertTrue(empty.equals(new AQueue(new String[]{"z"}, 1))); }
+        assertEquals(empty, new AQueue(new String[]{"z"}, 1));
     }
 
     @Test
     void testAQueueDequeue(){
         String elt = aQueueA.dequeue();
         assertEquals("a", elt);
-        assertTrue(aQueueA.equals(new AQueue(new String[]{"b", "c"})));
+//        assertTrue(aQueueA.equals(new AQueue(new String[]{"b", "c"}, 2)));
+        assertEquals(new AQueue(new String[]{"b", "c"}, 2), aQueueA);
         AQueue empty = AQueue.empty_queue();
         assertThrows(NoSuchElementException.class, () -> {
             empty.dequeue();

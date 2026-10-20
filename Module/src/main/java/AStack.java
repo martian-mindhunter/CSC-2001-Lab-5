@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 class AStack {
@@ -5,18 +6,19 @@ class AStack {
     String[] astackList;
     int live;
 
-    public AStack (String[] stringList){
+    public AStack (String[] stringList, int liveElts){
         this.astackList = new String[stringList.length];
         for(int i = 0; i < astackList.length; i++){
             this.astackList[i] = stringList[i];
         }
 
-        this.live = 0;
-        for(String elt : stringList){
-            if(elt != null){
-                this.live++;
-            }
-        }
+//        this.live = 0;
+//        for(String elt : stringList){
+//            if(elt != null){
+//                this.live++;
+//            }
+//        }
+        this.live = liveElts;
     }
 
     public AStack (){
@@ -25,54 +27,14 @@ class AStack {
     }
 
     // AStack equals method
-    public boolean equals( AStack other ){
-//
-//        if (other == null){
-//            return false;
-//        }
-//        if(this == other){
-//            return true;
-//        }
-//
-//        if(this.astackList == null || other.astackList == null){
-//            return this.astackList == other.astackList;
-//        }
-//
-//        if(this.astackList.length != other.astackList.length){
-//            return false;
-//        } else {
-//            for( int i = 0; i < this.astackList.length; i++ ){
-//                if(!(this.astackList[i].equals(other.astackList[i]))){
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
+    public boolean equals( Object obj ){
 
-        if(this.astackList.length >= other.astackList.length){
-            for(int i = 0; i < other.astackList.length; i++){
-                if(this.astackList[i] != other.astackList[i]){
-                    return false;
-                }
-            }
-            for(int i = other.astackList.length; i < this.astackList.length; i++){
-                if(this.astackList[i] != null){
-                    return false;
-                }
-            }
+        if(obj instanceof AStack ){
+            AStack other = (AStack)obj;
+            return (this.live == other.live) && (Arrays.equals(this.astackList, other.astackList));
         } else {
-            for(int i = 0; i < this.astackList.length; i++){
-                if(other.astackList[i].equals(this.astackList[i])){
-                    return false;
-                }
-            }
-            for(int i = this.astackList.length; i < other.astackList.length; i++){
-                if(other.astackList[i] != null){
-                    return false;
-                }
-            }
+            return false;
         }
-        return true;
     }
 
     // Adds elt to the beginning of stack
@@ -102,7 +64,6 @@ class AStack {
 
     // Adds elt to the top of the stack
     public void push(String elt){
-        String[] hold = this.astackList;
         this.doubleLength();
 //        for(int i = 1; i < this.live+1; i++){
 //            this.astackList[i] = hold[i-1];
@@ -112,15 +73,20 @@ class AStack {
 //        } else {
 //            this.astackList = new String[]{elt};
 //        }
-        for(int i = 0; i < this.live; i++){
-            this.astackList[i] = hold[i];
-        }
-        if(this.astackList != null){
-            this.astackList[this.live] = elt;
-        } else {
-            this.astackList = new String[]{elt};
-        }
+//        for(int i = 0; i < this.live; i++){
+//            this.astackList[i] = hold[i];
+//        }
+//        if(this.astackList != null){
+//            this.astackList[this.live] = elt;
+//        } else {
+//            this.astackList = new String[]{elt};
+//        }
+//        this.live++;
+        this.astackList[this.live] = elt;
         this.live++;
+
+        // !!! performance killer -- fix to not be O(n) when pushing when
+        //     the stack is not doubled !!!
 
 //        int newLength;
 //        if(this.astackList == null){
@@ -146,16 +112,20 @@ class AStack {
 
     // Removes & returns top element of stack, or returns error
     public String pop(){
-        if(this.astackList == null || this.astackList.length == 0){
+        if(this.astackList == null || this.live == 0){
             throw new NoSuchElementException();
         }
-        String hold = this.astackList[this.live-1];
-        int newLength = this.astackList.length-1;
-        String[] shorterArray = new String[newLength];
-        for( int i = 0; i < this.astackList.length-1; i++ ){
-            shorterArray[i] = this.astackList[i];
-        }
-        this.astackList = shorterArray;
+//        String hold = this.astackList[this.live-1];
+//        int newLength = this.astackList.length-1;
+//        String[] shorterArray = new String[newLength];
+//        for( int i = 0; i < this.astackList.length-1; i++ ){
+//            shorterArray[i] = this.astackList[i];
+//        }
+//        this.astackList = shorterArray;
+//        this.live--;
+//        return hold;
+        String hold = this.astackList[live-1];
+        this.astackList[live-1] = null;
         this.live--;
         return hold;
     }

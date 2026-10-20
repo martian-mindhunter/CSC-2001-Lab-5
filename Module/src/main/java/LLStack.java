@@ -1,4 +1,5 @@
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 class LLStack {
 
@@ -14,19 +15,17 @@ class LLStack {
     }
 
     // LLStack equals method
-    public boolean equals( LLStack other ){
+    public boolean equals( Object obj ){
+        if(obj instanceof LLStack){
+            LLStack other = (LLStack)obj;
 
-        if (other == null){
+            return Objects.equals(this.llstackPair, other.llstackPair);
+
+
+        } else {
             return false;
         }
-        if(this == other){
-            return true;
-        }
 
-        if(this.llstackPair == null || other.llstackPair == null){
-            return this.llstackPair == other.llstackPair;
-        }
-        return this.llstackPair.equals(other.llstackPair);
 
     }
 
