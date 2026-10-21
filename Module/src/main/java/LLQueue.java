@@ -40,6 +40,16 @@ class LLQueue {
 
     }
 
+    // Reverse a list
+    static Pair revList(Pair l){
+        Pair accum = null;
+        while(l != null){
+            accum = new Pair(l.first, accum);
+            l = l.rest;
+        }
+        return accum;
+    }
+
     // Returns an empty queue w/o arguments
     public static LLQueue empty_queue(){
         return(new LLQueue());

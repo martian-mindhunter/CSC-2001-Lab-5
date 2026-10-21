@@ -276,6 +276,7 @@ class MainTest {
     @Test
     void testLLQueueDequeue(){
         String elt = llQueueA.dequeue();
+        assertEquals(new LLQueue(new Pair("b", new Pair("c", null))), llQueueA);
         assertEquals("a", elt);
         LLQueue empty = LLQueue.empty_queue();
         assertThrows(NoSuchElementException.class, () -> {
