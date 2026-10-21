@@ -321,13 +321,13 @@ class MainTest {
 
 
     // Tests for AQueue
-    AQueue aQueueA = new AQueue(new String[]{"a", "b", "c"}, 3);
+    AQueue aQueueA = new AQueue(new String[]{"a", "b", "c"}, 3, 0, 4);
 
     @Test
     void testAQueueEquals(){
 //        assertTrue(aQueueA.equals(new AQueue(new String[]{"a", "b", "c"})));
-        assertEquals(aQueueA, new AQueue(new String[]{"a", "b", "c"}, 3));
-        AQueue aQueueB = new AQueue(new String[]{"a", "b"}, 2);
+        assertEquals(aQueueA, new AQueue(new String[]{"a", "b", "c"}, 3, 0, 4));
+        AQueue aQueueB = new AQueue(new String[]{"a", "b"}, 2, 0, 4);
 //        assertFalse(aQueueA.equals(aQueueB));
         assertNotEquals(aQueueA, aQueueB);
         aQueueB.enqueue("c");
@@ -335,29 +335,29 @@ class MainTest {
 //        aQueueA.enqueue(null);
 //        System.out.println(Arrays.toString(aQueueA.aqueueList));
 //        System.out.println(Arrays.toString(aQueueB.aqueueList));
-        assertNotEquals(aQueueA, aQueueB);
-        assertEquals(new AQueue(new String[]{"a", "b", "c", null}, 3), aQueueB);
+        assertEquals(aQueueA, aQueueB);
+        assertEquals(new AQueue(new String[]{"a", "b", "c"}, 3, 0, 4), aQueueB);
     }
 
     @Test
     void testAQueueEmpty(){
-        assertEquals(AQueue.empty_queue(), new AQueue());
-        AQueue empty = AQueue.empty_queue();
-        assertEquals(empty, AQueue.empty_queue());
+        assertEquals(AQueue.empty_queue(0), new AQueue());
+        AQueue empty = AQueue.empty_queue(0);
+        assertEquals(empty, AQueue.empty_queue(0));
         assertNotEquals(aQueueA, empty);
     }
 
     @Test
     void testAQueueEnqueue() {
-        AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d", null, null}, 4);
+        AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d"}, 4, 0, 4);
         aQueueA.enqueue("d");
         System.out.println(Arrays.toString(aQueueA.aqueueList));
 //        assertTrue(aQueueA.equals(aQueueD));
         assertEquals(aQueueA, aQueueD);
-        AQueue empty = AQueue.empty_queue();
+        AQueue empty = AQueue.empty_queue(1);
         empty.enqueue("z");
 //        assertTrue(empty.equals(new AQueue(new String[]{"z"}, 1))); }
-        assertEquals(empty, new AQueue(new String[]{"z"}, 1));
+        assertEquals(empty, new AQueue(new String[]{"z"}, 1, 0, 1));
     }
 
     @Test
@@ -365,8 +365,9 @@ class MainTest {
         String elt = aQueueA.dequeue();
         assertEquals("a", elt);
 //        assertTrue(aQueueA.equals(new AQueue(new String[]{"b", "c"}, 2)));
-        assertEquals(new AQueue(new String[]{"b", "c"}, 2), aQueueA);
-        AQueue empty = AQueue.empty_queue();
+        System.out.println(Arrays.toString(aQueueA.aqueueList));
+        assertEquals(new AQueue(new String[]{null, "b", "c", null}, 2, 1, 4), aQueueA);
+        AQueue empty = AQueue.empty_queue(0);
         assertThrows(NoSuchElementException.class, () -> {
             empty.dequeue();
         });
@@ -376,7 +377,7 @@ class MainTest {
     void testAQueuePeek(){
         String elt = aQueueA.peek();
         assertEquals("a", elt);
-        AQueue empty = AQueue.empty_queue();
+        AQueue empty = AQueue.empty_queue(0);
         assertThrows(NoSuchElementException.class, () -> {
             empty.peek();
         });
@@ -386,7 +387,7 @@ class MainTest {
     void testAQueueSize(){
         int targetSize = aQueueA.size();
         assertEquals(3, targetSize);
-        AQueue empty = AQueue.empty_queue();
+        AQueue empty = AQueue.empty_queue(0);
         assertThrows(NoSuchElementException.class, () -> {
             empty.size();
         });
@@ -394,7 +395,7 @@ class MainTest {
 
     @Test
     void testAQueueIsEmpty(){
-        AQueue empty = AQueue.empty_queue();
+        AQueue empty = AQueue.empty_queue(0);
         assertFalse(aQueueA.is_empty());
         assertTrue(empty.is_empty());
     }
