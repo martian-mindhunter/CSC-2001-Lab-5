@@ -1,38 +1,37 @@
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-class LLQueue {
 
-    Pair llqueuePair;
+class LLQueue implements MyQueue{
 
-    public LLQueue ( Pair r ){
-        this.llqueuePair = r;
+    Pair llqueueHead;
+    Pair llqueueTail;
+
+    public LLQueue ( Pair l, Pair r ){
+        this.llqueueHead= l;
+        this.llqueueTail= r;
     }
 
     public LLQueue(){
-        this.llqueuePair = null;
+        this.llqueueHead = null;
+        this.llqueueTail = null;
+    }
+
+    // Returns an empty queue w/o arguments
+    public static LLQueue empty_queue(){
+
+        return(new LLQueue());
+
     }
 
     // LLQueue equals method
     public boolean equals( Object obj ){
 
-//        if (other == null){
-//            return false;
-//        }
-//        if(this == other){
-//            return true;
-//        }
-//
-//        if(this.llqueuePair == null || other.llqueuePair == null){
-//            return this.llqueuePair == other.llqueuePair;
-//        }
-//        return this.llqueuePair.equals(other.llqueuePair);
-
         if(obj instanceof LLQueue){
 
             LLQueue other = (LLQueue)obj;
 
-            return Objects.equals(this.llqueuePair, other.llqueuePair);
+            return Objects.equals(this.llqueueHead, other.llqueueHead) && Objects.equals(this.llqueueTail, other.llqueueTail);
 
         } else {
             return false;
@@ -42,40 +41,45 @@ class LLQueue {
 
     // Reverse a list
     static Pair revList(Pair l){
-        Pair accum = null;
+        Pair reversed = null;
         while(l != null){
-            accum = new Pair(l.first, accum);
-            l = l.rest;
+            reversed = new Pair(l.head(), reversed);
+            l = l.tail();
         }
-        return accum;
+        return reversed;
     }
 
-    // Returns an empty queue w/o arguments
-    public static LLQueue empty_queue(){
-        return(new LLQueue());
+    // Refill helper method
+    public void refillHead(){
+        if(this.llqueueHead == null){
+            this.llqueueHead = revList(this.llqueueTail);
+            this.llqueueTail = null;
+        }
     }
 
     // Adds a string to the end of queue
+    @Override
     public void enqueue(String elt){
-        this.llqueuePair = addToEnd(this.llqueuePair, elt);
+        this.llqueueTail = new Pair(elt, this.llqueueTail);
     }
 
     // enqueue helper method that recursively appends new elt
-    private Pair addToEnd(Pair r, String l){
-        if(r == null){
-            return new Pair(l, null);
-        }
-        return new Pair(r.head(), addToEnd(r.tail(), l));
-    }
+//    private Pair addToEnd(String l, Pair r){
+//        if(l == null){
+//            return new Pair(l, null);
+//        }
+//        return new Pair(r.head(), addToEnd(l, r.tail()));
+//    }
 
     // Removes & returns the top element (FIFO)
     public String dequeue(){
-        if(this.llqueuePair == null){
+        refillHead();
+        if(this.llqueueHead == null){
             throw new NoSuchElementException();
         }
 
-        String topValue = this.llqueuePair.head();
-        this.llqueuePair = this.llqueuePair.tail();
+        String topValue = this.llqueueHead.head();
+        this.llqueueHead = this.llqueueHead.tail();
 
         return topValue;
 
@@ -83,28 +87,37 @@ class LLQueue {
 
     // Returns top element w/o removal
     public String peek(){
-        if(this.llqueuePair == null){
+        refillHead();
+        if(this.llqueueHead == null){
             throw new NoSuchElementException();
         }
 
-        return this.llqueuePair.head();
+        return this.llqueueHead.head();
     }
 
     // Returns the # of elts in stack
     public int size(){
-        return counter(this.llqueuePair);
+        int count = 0;
+        for ( Pair current = this.llqueueHead; current != null; current = current.tail()) {
+            count++;
+        }
+        for(Pair current = this.llqueueTail; current != null; current = current.tail()){
+            count++;
+        }
+        return count;
     }
+
     // size helper method
-    public int counter(Pair r){
-        return switch(r){
-            case null -> 0;
-            default -> 1 + counter(r.tail());
-        };
-    }
+//    public int counter(Pair r){
+//        return switch(r){
+//            case null -> 0;
+//            default -> 1 + counter(r.tail());
+//        };
+//    }
 
     // Returns if a stack has no elts
     public boolean is_empty(){
-        return this.equals(new LLQueue());
+        return this.llqueueHead == null && this.llqueueTail == null;
     }
 
 }

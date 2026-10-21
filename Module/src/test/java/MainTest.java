@@ -247,8 +247,13 @@ class MainTest {
     }
 
     // LLQueue Tests
-    LLQueue llQueueA = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
-    LLQueue llQueueB = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
+//    LLQueue llQueueA = new LLQueue(new Pair("a", new Pair("b",
+//            new Pair("c", null))));
+    LLQueue llQueueA = new LLQueue(new Pair("a", new Pair("b", null)),
+        new Pair("c", null));
+//    LLQueue llQueueB = new LLQueue(new Pair("a", new Pair("b", new Pair("c", null))));
+    LLQueue llQueueB = new LLQueue(new Pair("a", new Pair("b", null)),
+        new Pair("c", null));
 
     @Test
     void testLLQueueEquals(){
@@ -265,18 +270,23 @@ class MainTest {
     @Test
     void testLLQueueEnqueue(){
         llQueueA.enqueue("d");
-        LLQueue llQueueD = new LLQueue(new Pair("a", new Pair("b", new Pair("c", new Pair("d", null)))));
+        LLQueue llQueueD = new LLQueue(new Pair("a", new Pair("b", null)),
+                new Pair("d", new Pair("c", null)));
+//        System.out.println(Arrays.toString(llQueueA.llqueueHead));
         assertEquals(llQueueA, llQueueD);
         LLQueue empty = LLQueue.empty_queue();
         empty.enqueue("z");
-        assertEquals(empty, new LLQueue(new Pair("z", null)));
+        assertEquals(empty, new LLQueue(null,
+                new Pair("z", null)));
 
     }
 
     @Test
     void testLLQueueDequeue(){
         String elt = llQueueA.dequeue();
-        assertEquals(new LLQueue(new Pair("b", new Pair("c", null))), llQueueA);
+        System.out.println(elt);
+        assertEquals(new LLQueue(new Pair("b", null),
+                new Pair("c", null)), llQueueA);
         assertEquals("a", elt);
         LLQueue empty = LLQueue.empty_queue();
         assertThrows(NoSuchElementException.class, () -> {
