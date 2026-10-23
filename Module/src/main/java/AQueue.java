@@ -8,19 +8,6 @@ public class AQueue implements MyQueue{
     int frontIndex;
     int capacity;
 
-//    public AQueue(String[] stringList, int liveElts){
-//        this.aqueueList = new String[stringList.length];
-//        for( int i = 0; i < aqueueList.length; i++ ){
-//            this.aqueueList[i] = stringList[i];
-//        }
-////        this.live = 0;
-////        for(String elt : stringList){
-////            if(elt != null){
-////                this.live++;
-////            }
-////        }
-//        this.live = liveElts;
-//    }
 
     public AQueue(String[] stringList, int live, int frontIndex, int capacity){
         this.aqueueList = new String[capacity];
@@ -57,38 +44,20 @@ public class AQueue implements MyQueue{
         return new AQueue(new String[capacity], 0, 0, capacity);
     }
 
-    // Doubling method to allow for inserting/adding
-//    public void doubleLength() {
-//        if(this.aqueueList != null){
-//            if (this.live == this.aqueueList.length) {
-//                int newLength;
-//                if (this.aqueueList.length == 0) {
-//                    newLength = 1;
-//                } else {
-//                    newLength = this.aqueueList.length * 2;
-//                }
-//                String[] doubledArray = new String[newLength];
-//
-//                for (int i = 0; i < this.live; i++) {
-//                    doubledArray[i] = this.aqueueList[i];
-//                }
-//                this.aqueueList = doubledArray;
-//            }
-//        }
-//    }
 
     // Adds elt to the end of the queue
     public void enqueue(String elt){
 
-//        this.doubleLength();
-//        this.aqueueList[this.live] = elt;
-//        this.live++;
-
         if(this.live == this.capacity){
             throw new IllegalStateException("Queue is full");
         }
-        int tailIndex = (this.frontIndex + this.live) % this.capacity;
-        this.aqueueList[tailIndex] = elt;
+        if(frontIndex > 0){
+            this.aqueueList[0] = elt;
+            this.frontIndex = 0;
+        } else {
+            int tailIndex = (this.frontIndex + this.live) % this.capacity;
+            this.aqueueList[tailIndex] = elt;
+        }
         this.live++;
 
     }
@@ -98,15 +67,6 @@ public class AQueue implements MyQueue{
         if(this.aqueueList == null || this.aqueueList.length == 0){
             throw new NoSuchElementException();
         }
-//        String hold = this.aqueueList[0];
-//        int newLength = this.aqueueList.length-1;
-//        String[] shorterArray = new String[newLength];
-//        for( int i = 1; i < this.aqueueList.length; i++ ){
-//            shorterArray[i-1] = this.aqueueList[i];
-//        }
-//        this.aqueueList = shorterArray;
-//        this.live--;
-//        return hold;
         String hold = this.aqueueList[this.frontIndex];
         this.aqueueList[this.frontIndex] = null;
         this.frontIndex = (this.frontIndex + 1) % capacity;

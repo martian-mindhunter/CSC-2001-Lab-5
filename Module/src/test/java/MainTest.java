@@ -288,6 +288,22 @@ class MainTest {
         assertEquals(new LLQueue(new Pair("b", null),
                 new Pair("c", null)), llQueueA);
         assertEquals("a", elt);
+        elt = llQueueA.dequeue();
+        assertEquals("b", elt);
+        assertEquals(new LLQueue(null, new Pair("c", null)), llQueueA);
+        elt = llQueueA.dequeue();
+        assertEquals("c", elt);
+        assertEquals(new LLQueue(null, null), llQueueA);
+
+        LLQueue fourLength = new LLQueue(null, new Pair("d", new Pair("c", null)));
+        LLQueue test = fourLength;
+        elt = fourLength.dequeue();
+        assertEquals("c", elt);
+        assertEquals(new LLQueue(new Pair("d", null), null), fourLength);
+        elt = fourLength.dequeue();
+        assertEquals("d", elt);
+        assertEquals(new LLQueue(null, null), fourLength);
+
         LLQueue empty = LLQueue.empty_queue();
         assertThrows(NoSuchElementException.class, () -> {
             empty.dequeue();
@@ -325,7 +341,6 @@ class MainTest {
 
     @Test
     void testAQueueEquals(){
-//        assertTrue(aQueueA.equals(new AQueue(new String[]{"a", "b", "c"})));
         assertEquals(aQueueA, new AQueue(new String[]{"a", "b", "c"}, 3, 0, 4));
         AQueue aQueueB = new AQueue(new String[]{"a", "b"}, 2, 0, 4);
 //        assertFalse(aQueueA.equals(aQueueB));
@@ -352,12 +367,17 @@ class MainTest {
         AQueue aQueueD = new AQueue(new String[]{"a", "b", "c", "d"}, 4, 0, 4);
         aQueueA.enqueue("d");
         System.out.println(Arrays.toString(aQueueA.aqueueList));
-//        assertTrue(aQueueA.equals(aQueueD));
         assertEquals(aQueueA, aQueueD);
         AQueue empty = AQueue.empty_queue(1);
         empty.enqueue("z");
-//        assertTrue(empty.equals(new AQueue(new String[]{"z"}, 1))); }
         assertEquals(empty, new AQueue(new String[]{"z"}, 1, 0, 1));
+        AQueue midQueue = new AQueue(new String[]{null, "a", "b", null}, 2, 1, 4);
+        midQueue.enqueue("c");
+        System.out.println(Arrays.toString(midQueue.aqueueList));
+        assertEquals(new AQueue(new String []{"c", "a", "b", null}, 3, 0, 4), midQueue);
+        assertThrows(IllegalStateException.class, () -> {
+            aQueueD.enqueue("x");
+        });
     }
 
     @Test
